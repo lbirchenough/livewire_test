@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Counter;
+use App\Livewire\Home;
 use App\Livewire\SensorData;
-use App\Livewire\Welcome;
+
+Route::get('/', Home::class)->name('login');
+Route::get('/sensor-data', SensorData::class)->middleware('auth');
 
 
-Route::get('/sensor-data', SensorData::class);

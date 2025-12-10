@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\SensorData as SensorDataModel;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class SensorData extends Component
 {
@@ -91,6 +92,15 @@ class SensorData extends Component
                 ],
             ],
         ];
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        
+        return $this->redirect('/', navigate: true);
     }
 
     public function render()

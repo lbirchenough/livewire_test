@@ -1,5 +1,8 @@
 <div class="container mx-auto px-4 py-8 max-w-7xl" wire:poll.5s="loadData">
-    <h1 class="text-3xl font-bold mb-8">Sensor Data</h1>
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">Sensor Data</h1>
+        <x-button label="Logout" wire:click="logout" class="btn-outline btn-error" />
+    </div>
     
     {{-- Chart --}}
     <div class="mb-12 bg-base-100 rounded-lg shadow-lg p-6">
