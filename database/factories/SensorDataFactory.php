@@ -39,8 +39,8 @@ class SensorDataFactory extends Factory
         }
 
         return [
-            'sensor_name' => $this->faker->randomElement([1, 2]),
-            'value' => $this->faker->randomFloat(2, 10, 100),
+            'sensor_name' => fake()->randomElement([1, 2]),
+            'value' => fake()->randomFloat(2, 10, 100),
             'type' => 'pressure',
             'unit' => 'kpa',
             'time' => clone self::$lastTime, // Clone ensures each record gets its own copy of the timestamp
