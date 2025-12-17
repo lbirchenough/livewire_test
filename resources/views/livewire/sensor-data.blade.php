@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8 max-w-7xl" wire:poll.5s="loadData">
+<div class="container mx-auto px-4 py-8 max-w-7xl" wire:poll.60s="loadData">
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold">Sensor Data</h1>
         <x-button label="Logout" wire:click="logout" class="btn-outline btn-error" />
