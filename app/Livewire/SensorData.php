@@ -155,6 +155,7 @@ class SensorData extends Component
             ],
             'options' => [
                 'responsive' => true,
+                'maintainAspectRatio' => false,
                 'elements' => [
                     'point' => [
                         'radius' => 3,

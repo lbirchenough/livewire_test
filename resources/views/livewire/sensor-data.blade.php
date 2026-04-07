@@ -21,7 +21,9 @@
     {{-- Switch Chart --}}
     <div class="bg-base-100 rounded-lg shadow-lg p-6">
         <h2 class="text-xl font-semibold mb-4">Switch Last Hour All Sensors</h2>
-        <x-chart wire:model="switchChart" />
+        <div style="height: 280px">
+            <x-chart wire:model="switchChart" />
+        </div>
     </div>
 
 </div>
