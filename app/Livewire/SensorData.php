@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class SensorData extends Component
 {
-    public $sensorData;
     public array $sensorChart = [];
+    public array $switchChart = [];
+    public int $pollInterval = 30;
 
     public function mount()
     {
@@ -18,18 +19,27 @@ class SensorData extends Component
 
     public function loadData()
     {
-        $this->sensorData = SensorDataModel::orderBy('time', 'asc')->get();
-        $this->prepareChartData();
+        $sensorData = SensorDataModel::where('time', '>=', now()->subHour())
+            ->where('type', 'distance')
+            ->orderBy('time', 'asc')
+            ->get();
+        $this->prepareChartData($sensorData);
+
+        $switchData = SensorDataModel::where('time', '>=', now()->subHour())
+            ->where('type', 'switch')
+            ->orderBy('time', 'asc')
+            ->get();
+        $this->prepareSwitchChartData($switchData);
     }
 
-    public function prepareChartData()
+    public function prepareChartData($sensorData)
     {
         // Separate data by sensor_name
-        $sensor1Data = $this->sensorData->where('sensor_name', 1)->values();
-        $sensor2Data = $this->sensorData->where('sensor_name', 2)->values();
+        $sensor1Data = $sensorData->where('sensor_name', 1)->values();
+        $sensor2Data = $sensorData->where('sensor_name', 2)->values();
 
         // Get all unique times and sort them
-        $allTimes = $this->sensorData->pluck('time')->unique()->sort()->values();
+        $allTimes = $sensorData->pluck('time')->unique()->sort()->values();
 
         // Prepare data arrays for each sensor (matching the time labels)
         $sensor1Values = [];
@@ -88,6 +98,73 @@ class SensorData extends Component
                         'beginAtZero' => true,
                         'min' => 0,
                         'max' => 150,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function prepareSwitchChartData($switchData)
+    {
+        $sensor1Data = $switchData->where('sensor_name', 1)->values();
+        $sensor2Data = $switchData->where('sensor_name', 2)->values();
+
+        $allTimes = $switchData->pluck('time')->unique()->sort()->values();
+
+        $sensor1Values = [];
+        $sensor2Values = [];
+
+        foreach ($allTimes as $time) {
+            $s1 = $sensor1Data->firstWhere('time', $time);
+            $s2 = $sensor2Data->firstWhere('time', $time);
+
+            $sensor1Values[] = $s1 ? (int) $s1->value : null;
+            $sensor2Values[] = $s2 ? (int) $s2->value : null;
+        }
+
+        $this->switchChart = [
+            'type' => 'line',
+            'data' => [
+                'labels' => $allTimes->map(fn($time) => date('Y-m-d H:i', strtotime($time)))->toArray(),
+                'datasets' => [
+                    [
+                        'label' => 'Sensor 1',
+                        'data' => $sensor1Values,
+                        'borderColor' => 'rgb(239, 68, 68)',
+                        'backgroundColor' => 'rgba(239, 68, 68, 0.2)',
+                        'fill' => true,
+                        'stepped' => 'after',
+                        'borderWidth' => 2,
+                        'spanGaps' => true,
+                    ],
+                    [
+                        'label' => 'Sensor 2',
+                        'data' => $sensor2Values,
+                        'borderColor' => 'rgb(59, 130, 246)',
+                        'backgroundColor' => 'rgba(59, 130, 246, 0.2)',
+                        'fill' => true,
+                        'stepped' => 'after',
+                        'borderWidth' => 2,
+                        'spanGaps' => true,
+                    ],
+                ],
+            ],
+            'options' => [
+                'responsive' => true,
+                'elements' => [
+                    'point' => [
+                        'radius' => 3,
+                        'hoverRadius' => 5,
+                    ],
+                ],
+                'scales' => [
+                    'y' => [
+                        'beginAtZero' => true,
+                        'min' => 0,
+                        'max' => 1,
+                        'ticks' => [
+                            'stepSize' => 1,
+                        ],
                     ],
                 ],
             ],
