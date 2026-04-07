@@ -56,7 +56,7 @@ class SensorData extends Component
         $this->sensorChart = [
             'type' => 'line',
             'data' => [
-                'labels' => $allTimes->map(fn($time) => date('Y-m-d H:i', strtotime($time)))->toArray(),
+                'labels' => $allTimes->map(fn($time) => date('H:i', strtotime($time) + 8 * 3600))->toArray(),
                 'datasets' => [
                     [
                         'label' => 'Sensor 1',
@@ -94,6 +94,12 @@ class SensorData extends Component
                     ],
                 ],
                 'scales' => [
+                    'x' => [
+                        'title' => [
+                            'display' => true,
+                            'text' => 'Time (UTC+8)',
+                        ],
+                    ],
                     'y' => [
                         'beginAtZero' => true,
                         'min' => 0,
@@ -129,7 +135,7 @@ class SensorData extends Component
         $this->switchChart = [
             'type' => 'line',
             'data' => [
-                'labels' => $allTimes->map(fn($time) => date('Y-m-d H:i', strtotime($time)))->toArray(),
+                'labels' => $allTimes->map(fn($time) => date('H:i', strtotime($time) + 8 * 3600))->toArray(),
                 'datasets' => [
                     [
                         'label' => 'Sensor 1',
@@ -163,6 +169,12 @@ class SensorData extends Component
                     ],
                 ],
                 'scales' => [
+                    'x' => [
+                        'title' => [
+                            'display' => true,
+                            'text' => 'Time (UTC+8)',
+                        ],
+                    ],
                     'y' => [
                         'beginAtZero' => true,
                         'min' => 0,
