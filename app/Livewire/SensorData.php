@@ -97,7 +97,11 @@ class SensorData extends Component
                     'y' => [
                         'beginAtZero' => true,
                         'min' => 0,
-                        'max' => 150,
+                        'max' => 100,
+                        'title' => [
+                            'display' => true,
+                            'text' => 'cm',
+                        ],
                     ],
                 ],
             ],
