@@ -16,7 +16,7 @@ Data covers the last hour and is pushed to this backend via a REST API from the 
 
 ## IoT device
 
-The Raspberry Pi code that sends data to this backend lives here:
+The MicroPython code and other supporting scripts live here: 
 https://github.com/lbirchenough/iotproject
 
 ## Stack
